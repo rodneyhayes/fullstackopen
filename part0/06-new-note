@@ -1,0 +1,13 @@
+note over user: User enters new note text
+
+user->browser: Save
+
+note over browser:
+Js code pushes new note to list
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server: Store new note in list
+
+server-->browser: Response - {"message": "note created"}
