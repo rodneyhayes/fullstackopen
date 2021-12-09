@@ -11,7 +11,7 @@ const Button = ({handleEvent, text}) => {
 const StatisticLine = ({text, value}) => {
 	return (
 		<>
-			{text}: {value}<br/>
+			<td>{text}</td><td>{value}</td>
 		</>
 	)
 }
@@ -41,12 +41,16 @@ const Statistics = ({good, neutral, bad}) => {
 	return (
 		<div>
 			<h3>Statistics</h3>
-			<StatisticLine text="Good" value={good}/>
-			<StatisticLine text="Neutral" value={neutral}/>
-			<StatisticLine text="Bad" value={bad}/>
-			<StatisticLine text="All" value={getTotalFeedbackCount()}/>
-			<StatisticLine text="Average" value={getAverageScore()}/>
-			<StatisticLine text="Positive" value={getPositivePercentage()}/>
+			<table>
+				<tbody>
+					<tr><StatisticLine text="Good" value={good}/></tr>
+					<tr><StatisticLine text="Neutral" value={neutral}/></tr>
+					<tr><StatisticLine text="Bad" value={bad}/></tr>
+					<tr><StatisticLine text="All" value={getTotalFeedbackCount()}/></tr>
+					<tr><StatisticLine text="Average" value={getAverageScore()}/></tr>
+					<tr><StatisticLine text="Positive" value={getPositivePercentage()}/></tr>
+				</tbody>
+			</table>
 		</div>
 	)
 }
