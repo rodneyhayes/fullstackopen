@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 function Header(props){
   return (
@@ -24,7 +24,9 @@ function Part(props){
   return (
     <>
       <p>
-        {props.part.name} {props.part.exercises}
+        Part name:{props.part.name}
+        <br/>
+        Exercise count:{props.part.exercises}
       </p>
     </>
   )
@@ -33,13 +35,13 @@ function Part(props){
 function Total(props){
   return (
     <>
-      <p>Number of exercises: {props.parts.reduce((sum, part) => sum + part.exercises, 0)}</p>
+      <p>Total number of exercises: {props.parts.reduce((sum, part) => sum + part.exercises, 0)}</p>
     </>
   )
 }
 const App = () => {
   const course = {
-    name: 'Half Stack application development',
+    name: 'Half Stack Application Development',
     parts: [
       {
         name: 'Fundamentals of React',
