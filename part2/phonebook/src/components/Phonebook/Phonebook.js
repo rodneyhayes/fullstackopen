@@ -1,21 +1,23 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Search from './Search.js';
 import PersonForm from './PersonForm.js';
 import PersonList from './PersonList.js';
+import axios from 'axios';
 
 const Phonebook = () => {
-    const [persons, setPersons] = useState([
-      { name: 'Arto Hellas', number: '040-123456', id: 1 },
-      { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-      { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-      { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-    ]) 
-    
+    const [persons, setPersons] = useState([]);
     const [searchInput, setSearchInput] = useState('');
+    const baseUrl = 'http://localhost:3001'
   
     const handleSearchChange = (event) => {
       setSearchInput(event.target.value);
     }
+
+    const getPersonsHook = () => {
+      axios.get(`${baseUrl}/persons`).then(response => setPersons(response.data));
+    }
+
+    useEffect(getPersonsHook, []);
   
     return (
       <div>
