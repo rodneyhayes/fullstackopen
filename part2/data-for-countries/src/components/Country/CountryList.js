@@ -29,12 +29,16 @@ const CountryList = ({searchInput}) => {
                 );
             }
             else{
-                return (<ul>{countries.map(country => <li key={country.name.official}>{country.name.common}</li>)}</ul>);
+                return (<ul>{countries.map(country => <li key={country.name.official}>{country.name.common} <button onClick={() => showCountry(country)}>Show</button></li>)}</ul>);
             }
         }
         else{
             return <></>;
         }
+    }
+
+    const showCountry = (country) => {
+        setCountries([country]);
     }
 
     useEffect(getCountries, [searchInput]);
