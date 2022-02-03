@@ -13,19 +13,27 @@ const Phonebook = () => {
       setSearchInput(event.target.value);
     }
 
-    const getPersonsHook = async () => {
-      const records = await personService.get();
-      setPersons(records);
+    const handleDeletePerson = (id) => {
+      if(window.confirm("Do you really want to delete this person?")){
+        personService.deleteById(id).then(setPersons(persons.filter(person => person.id !== id)));
+      }
     }
 
-    useEffect(getPersonsHook, []);
+    useEffect(() => {
+      async function getPersonsHook(){
+        const records = await personService.getAll();
+        setPersons(records);
+      }
+
+      getPersonsHook();
+    }, []);
   
     return (
       <div>
         <h2>Phonebook</h2>
         <Search handleSearchChange={handleSearchChange}/>
         <PersonForm persons={persons} setPersons={setPersons}/>
-        <PersonList persons={persons} searchInput={searchInput}/>
+        <PersonList persons={persons} searchInput={searchInput} handleDeletePerson={handleDeletePerson}/>
       </div>
     )
 }
