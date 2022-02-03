@@ -13,20 +13,23 @@ const PersonForm = ({persons, setPersons}) => {
       setNewPhoneNumber(event.target.value);
     }
 
-    const personExists = (name) => {
-      return !!persons.find(person => person.name === name);
+    const findExistingPersonByName = (name) => {
+      return persons.find(person => person.name === name);
     }
 
     const handleAddPerson = async (event) => {
       event.preventDefault();
 
-      if(personExists(newName)){
-        alert(`${newName} was already added to the phone book!`);
+      const existingPerson = findExistingPersonByName(newName);
+
+      if(!!existingPerson){
+        if(window.confirm(`${newName} is already in the phonebook. Would you like to replace the current phone number?`)){
+          personService.update(existingPerson.id, {...existingPerson, number: newPhoneNumber}).then(updatedPerson => setPersons(persons.map(person => person.id != existingPerson.id ? person : updatedPerson)));
+        }
       }
       else{
         const person = {name: newName, number: newPhoneNumber};
-        const personRecord = await personService.create(person);
-        setPersons([...persons, personRecord]);
+        personService.create(person).then(newPerson => setPersons([...persons, newPerson]));
       }
     }
   
