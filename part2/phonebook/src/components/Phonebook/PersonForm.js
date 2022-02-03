@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import personService from './persons.js';
 
 const PersonForm = ({persons, setPersons}) => {
     const [newName, setNewName] = useState('')
@@ -16,18 +17,16 @@ const PersonForm = ({persons, setPersons}) => {
       return !!persons.find(person => person.name === name);
     }
 
-    const getNewId = () => {
-      return persons.length > 0 ? persons[persons.length - 1].id + 1 : 1;
-    }
-  
-    const handleAddPerson = (event) => {
+    const handleAddPerson = async (event) => {
       event.preventDefault();
+
       if(personExists(newName)){
         alert(`${newName} was already added to the phone book!`);
       }
       else{
-        const id = getNewId();
-        setPersons([...persons, {name: newName, number: newPhoneNumber, id: id}]);
+        const person = {name: newName, number: newPhoneNumber};
+        const personRecord = await personService.create(person);
+        setPersons([...persons, personRecord]);
       }
     }
   
