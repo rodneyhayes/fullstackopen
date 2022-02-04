@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import personService from './persons.js';
 
-const PersonForm = ({persons, setPersons}) => {
+const PersonForm = ({persons, setPersons, showNotificationMessage}) => {
     const [newName, setNewName] = useState('')
     const [newPhoneNumber, setNewPhoneNumber] = useState('');
   
@@ -24,12 +24,23 @@ const PersonForm = ({persons, setPersons}) => {
 
       if(!!existingPerson){
         if(window.confirm(`${newName} is already in the phonebook. Would you like to replace the current phone number?`)){
-          personService.update(existingPerson.id, {...existingPerson, number: newPhoneNumber}).then(updatedPerson => setPersons(persons.map(person => person.id != existingPerson.id ? person : updatedPerson)));
+          personService.update(existingPerson.id, {...existingPerson, number: newPhoneNumber})
+            .then(updatedPerson => {
+              setPersons(persons.map(person => person.id != existingPerson.id ? person : updatedPerson));
+              showNotificationMessage(`${existingPerson.name} updated successfully.`, 'success')
+            })
+            .catch(err => showNotificationMessage(`${existingPerson.name} failed to update.`, 'error'));
         }
       }
       else{
         const person = {name: newName, number: newPhoneNumber};
-        personService.create(person).then(newPerson => setPersons([...persons, newPerson]));
+        personService.create(person)
+          .then(newPerson => {
+            setPersons([...persons, newPerson]);
+            showNotificationMessage(`${newName} saved successfully.`, 'success')
+          })
+          .catch(err => showNotificationMessage(`${newName} failed to save.`, 'error'));
+
       }
     }
   
